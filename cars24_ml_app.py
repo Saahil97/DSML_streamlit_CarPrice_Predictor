@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import datetime
+import numpy
 
 import pickle
 
@@ -45,6 +46,10 @@ if(st.button("Predict Price")):
     transmission_type = encode_dict["transmission_type"][transmission_type]
 
     price = model_pred(fuel_type, transmission_type, engine, seats)
-    st.text("Predicted price of the car: "+ str(price))
-
-st.dataframe(cars_df.head())
+    st.text("Predicted price of the car: "+ str(numpy.round(price, 2)) +" Lakhs")
+    ee = [encode_dict.get(key) for key in encode_dict][0]
+    ee = list(ee)
+    st.text("The sample of the data for the fuel type: " + str(ee[fuel_type -1]))
+    st. dataframe(cars_df[cars_df['fuel_type'] == str(ee[fuel_type - 1])].head())
+else:
+    st.dataframe(cars_df.head())
